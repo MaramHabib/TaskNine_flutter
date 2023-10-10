@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:taskeight/secondcontext.dart';
 
 void main() {
-  runApp(const LoginPage());
+  runApp(const MaterialApp(
+    title: 'Navigation Basics',
+    home: LoginPage(),
+  ));
 }
 
-
+//const LoginPage()
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -15,11 +18,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // TODO: Add text editing controllers (101)
+  var user=TextEditingController();
+  var passcode=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      body: SafeArea(
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             children: <Widget>[
@@ -34,38 +39,72 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 120.0),
-              const TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Username',
-                ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: user ,
+              decoration: const InputDecoration(
+                filled: true,
+                labelText: '  Username',
               ),
+            ),
+          ),
+// spacer
+          const SizedBox(height: 12.0),
+
 // spacer
               const SizedBox(height: 20.0),
 // [Password]
-              const TextField(
-                decoration:  InputDecoration(
-                  filled: true,
-                  labelText: 'Password',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller:passcode ,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    labelText: 'Password',
+                  ),
+                  obscureText: true,
                 ),
-                obscureText: true,
               ),
+
               // TODO: Remove filled: true values (103)
               // TODO: Add TextField widgets (101)
               // TODO: Add button bar (101)
-              ElevatedButton(
-                  onPressed: (){
-              Navigator.push(  context  , MaterialPageRoute(builder: (context) => Mysecondscreen()  )  );
+              OverflowBar(
+                alignment: MainAxisAlignment.end,
 
-              },
-                  child: const Text('NEXT'),
+                children: [
+                  ElevatedButton(
+                    child: const Text('Cancel'),
+                    onPressed: (){
+                      user.clear();
+                      passcode.clear();
+                    },
+                  ),
+
+                  SizedBox(width: 25,),
+
+                  ElevatedButton(
+                    child: const Text('Next'),
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Mysecondscreen(data: "Welcome ${user.text}"
+                        )),
+                      );
+                    },
+                  ),
+                ],
+
               )
+
 
 
             ],
           ),
         ),
-      ),
-    );
+      );
+
   }
 }
